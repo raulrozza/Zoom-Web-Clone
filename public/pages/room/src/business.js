@@ -1,16 +1,15 @@
 class Business {
-  constructor({ media, room, view, socketBuilder }) {
+  constructor({ media, room, view, socketBuilder, peerBuilder }) {
     this.media = media;
     this.room = room;
     this.view = view;
 
-    this.socketBuilder = socketBuilder
-      .setOnUserConnected(this.onUserConnected())
-      .setOnUserDisconnected(this.onUserDisconnected())
-      .build();
-    this.socketBuilder.emit('join-room', this.room, 'teste01');
+    this.socketBuilder = socketBuilder;
+    this.peerBuilder = peerBuilder;
 
     this.currentStream = {};
+    this.socket = {};
+    this.currentPeer = {};
   }
 
   static initialize(deps) {
@@ -19,7 +18,19 @@ class Business {
   }
 
   async _init() {
-    this.currentStream = await this.media.getCamera();
+    this.currentStream = await this.media.getCamera(true);
+    this.socket = this.socketBuilder
+      .setOnUserConnected(this.onUserConnected())
+      .setOnUserDisconnected(this.onUserDisconnected())
+      .build();
+
+    this.currentPeer = await this.peerBuilder
+      .setOnError(this.onPeerError())
+      .setOnConnectionOpened(this.onPeerConnectionOpened())
+      .setOnCallReceived(this.onPeerCallReceived())
+      .setOnPeerStreamReceived(this.onPeerStreamReceived())
+      .build();
+
     this.addVideoStream('test01');
   }
 
@@ -35,12 +46,41 @@ class Business {
   onUserConnected() {
     return userId => {
       console.log('User connected', userId);
+      this.currentPeer.call(userId, this.currentStream);
     };
   }
 
   onUserDisconnected() {
     return userId => {
       console.log('User disconnected', userId);
+    };
+  }
+
+  onPeerError() {
+    return error => {
+      console.error('error on peer!', error);
+    };
+  }
+
+  onPeerConnectionOpened() {
+    return peer => {
+      const id = peer.id;
+
+      this.socket.emit('join-room', this.room, id);
+    };
+  }
+
+  onPeerCallReceived() {
+    return call => {
+      console.log('answering call', call);
+      call.answer(this.currentStream);
+    };
+  }
+
+  onPeerStreamReceived() {
+    return (call, stream) => {
+      const callerId = call.peer;
+      this.addVideoStream(callerId, stream);
     };
   }
 }
