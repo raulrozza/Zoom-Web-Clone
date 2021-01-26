@@ -10,7 +10,7 @@
     "plugins": ["prettier"],
     "parserOptions": {
         "ecmaVersion": 12,
-        "sourceType": "module"
+        "sourceType": "script"
     },
     "rules": {
         "prettier/prettier":[
@@ -21,6 +21,8 @@
                 "trailingComma": "all",
                 "arrowParens": "avoid"
             }
-        ]
+        ],
+        "no-undef": "off",
+        "no-unused-vars": "off"
     }
 }
