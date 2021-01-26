@@ -46,4 +46,10 @@ class View {
     const videoGrid = document.getElementById('video-grid');
     videoGrid.append(wrapperDiv);
   }
+
+  setParticipants(count) {
+    const myself = 1;
+    const participantsSpan = document.getElementById('participants');
+    participantsSpan.innerHTML = count + myself;
+  }
 }
