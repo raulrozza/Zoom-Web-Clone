@@ -1,0 +1,13 @@
+{
+  "name": "peer-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+      "dev": "npx peerjs --port 9000 --key peerjs --path /",
+      "start": "npx peerjs --port $PORT --key peerjs --path /"
+  },
+  "dependencies": {
+    "peer": "0.6.1"
+  }
+}
