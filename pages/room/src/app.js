@@ -15,6 +15,14 @@ const onload = () => {
   recorderBtn.addEventListener('click', recordClick(recorderBtn)); */
 
   const view = new View();
+  const media = new Media();
+  const deps = {
+    view,
+    media,
+    room,
+  };
+
+  Business.initialize(deps);
 };
 
 window.onload = onload;
