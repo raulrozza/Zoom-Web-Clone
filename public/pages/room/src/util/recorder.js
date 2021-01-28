@@ -66,4 +66,12 @@ class Recorder {
     this.completeRecordings.push([...this.recordedBlobs]);
     this.recordedBlobs = [];
   }
+
+  getAllVideoURLs() {
+    return this.completeRecordings.map(record => {
+      const superBuffer = new Blob(record, { type: this.videoType });
+
+      return window.URL.createObjectURL(superBuffer);
+    });
+  }
 }
