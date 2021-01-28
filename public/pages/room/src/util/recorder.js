@@ -74,4 +74,20 @@ class Recorder {
       return window.URL.createObjectURL(superBuffer);
     });
   }
+
+  download() {
+    if (!this.completeRecordings.length) return;
+
+    for (const recording of this.completeRecordings) {
+      const blob = new Blob(recording, { type: this.videoType });
+      const url = window.URL.createObjectURL(blob);
+
+      const linkElement = document.createElement('a');
+      linkElement.style.display = 'none';
+      linkElement.href = url;
+      linkElement.download = `${this.filename}.webm`;
+      document.body.appendChild(linkElement);
+      linkElement.click();
+    }
+  }
 }
