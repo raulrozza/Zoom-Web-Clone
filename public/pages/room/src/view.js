@@ -23,16 +23,10 @@ class View {
     return video;
   }
 
-  renderVideo({
-    userId,
-    stream = null,
-    url = null,
-    isCurrentId = false,
-    muted = true,
-  }) {
+  renderVideo({ userId, stream = null, url = null, isCurrentId = false }) {
     const video = this.createVideoElement({
       src: url,
-      muted,
+      muted: isCurrentId,
       srcObject: stream,
     });
     this.appendToHTMLTree(userId, video, isCurrentId);
