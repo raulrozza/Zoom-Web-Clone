@@ -118,5 +118,13 @@ class Business {
 
   onRecordPressed(recordingEnabled) {
     this.recordingEnabled = recordingEnabled;
+
+    for (const [key, value] of this.userRecordings) {
+      if (this.recordingEnabled) {
+        value.startRecording();
+        continue;
+      }
+      value.stopRecording();
+    }
   }
 }

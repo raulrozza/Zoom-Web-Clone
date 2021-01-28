@@ -8,6 +8,7 @@ class Recorder {
 
     this.mediaRecorder = {};
     this.recordedBlobs = [];
+    this.completeRecordings = [];
     this.recordingActive = false;
   }
 
@@ -49,5 +50,20 @@ class Recorder {
     this.mediaRecorder.start();
     this.recordingActive = true;
     console.log('Started recording!');
+  }
+
+  async stopRecording() {
+    if (!this.recordingActive) return;
+    if (this.mediaRecorder.state === 'inactive') return;
+
+    this.mediaRecorder.stop();
+    console.log('Recording stopped', this.userName);
+
+    this.recordingActive = false;
+
+    await Util.sleep(200);
+
+    this.completeRecordings.push([...this.recordedBlobs]);
+    this.recordedBlobs = [];
   }
 }
