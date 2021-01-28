@@ -31,9 +31,11 @@ class Business {
       .setOnConnectionOpened(this.onPeerConnectionOpened())
       .setOnCallReceived(this.onPeerCallReceived())
       .setOnPeerStreamReceived(this.onPeerStreamReceived())
+      .setOnCallError(this.onPeerCallError())
+      .setOnCallClose(this.onPeerCallClose())
       .build();
 
-    this.addVideoStream('test01');
+    this.addVideoStream(this.currentPeer.id);
   }
 
   addVideoStream(userId, stream = this.currentStream) {
@@ -73,10 +75,7 @@ class Business {
   }
 
   onPeerCallReceived() {
-    return call => {
-      console.log('answering call', call);
-      call.answer(this.currentStream);
-    };
+    return call => call.answer(this.currentStream);
   }
 
   onPeerStreamReceived() {
@@ -88,5 +87,17 @@ class Business {
 
       this.view.setParticipants(this.peers.size);
     };
+  }
+
+  onPeerCallError() {
+    return (call, error) => {
+      console.error('A call error ocurred', error);
+      call.answer(this.currentStream);
+      this.view.removeVideoElement(call.peer);
+    };
+  }
+
+  onPeerCallClose() {
+    return call => console.log('Call closed', call.peer);
   }
 }

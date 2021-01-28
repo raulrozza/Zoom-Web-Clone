@@ -52,4 +52,10 @@ class View {
     const participantsSpan = document.getElementById('participants');
     participantsSpan.innerHTML = count + myself;
   }
+
+  removeVideoElement(id) {
+    const element = document.getElementById(id);
+
+    element.remove();
+  }
 }
