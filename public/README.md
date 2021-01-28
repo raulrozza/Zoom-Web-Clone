@@ -1,13 +1,14 @@
-# Projeto base da JS Expert Week 2.0
+# Frotend da Aplicação
 
-- Acesse o [home](./pages/home/index.html) para acessar a home page
-- Acesse o [room](./page/room/index.html) uma room específica
+Esta é a aplicação base, vista pelo usuário comum. A página inicial é apenas um template, sem funcionalidades. Ela serve apenas para você criar ou se unir a uma sala, e assim usufriur da aplicação.
 
-## Home Page
+Na página de sala, o usuário pode conversar em tempo real com outros usuários que entrem na sala. É possível também criar no botão Record para gravar a chamada, e no botão End para finalizá-la e baixar os arquivos de vídeo gerados com ela.
+
+## Página Inicial
 
 ![home page](./prints/home.png)
 
-## Room
+## Sala
 
 ![room](./prints/room.png)
 
