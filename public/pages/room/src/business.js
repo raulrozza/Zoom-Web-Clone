@@ -57,6 +57,14 @@ class Business {
   onUserDisconnected() {
     return userId => {
       console.log('User disconnected', userId);
+
+      if (this.peers.has(userId)) {
+        this.peers.get(userId).call.close();
+        this.peers.delete(userId);
+      }
+
+      this.view.setParticipants(this.peers.size);
+      this.view.removeVideoElement(userId);
     };
   }
 
