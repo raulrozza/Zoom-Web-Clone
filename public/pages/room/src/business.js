@@ -12,6 +12,7 @@ class Business {
     this.currentPeer = {};
 
     this.peers = new Map();
+    this.userRecordings = new Map();
   }
 
   static initialize(deps) {
@@ -20,6 +21,8 @@ class Business {
   }
 
   async _init() {
+    this.view.configureRecordButton(this.onRecordPressed.bind(this));
+
     this.currentStream = await this.media.getCamera(true);
     this.socket = this.socketBuilder
       .setOnUserConnected(this.onUserConnected())
@@ -39,6 +42,10 @@ class Business {
   }
 
   addVideoStream(userId, stream = this.currentStream) {
+    const recorderInstance = new Recorder(userId, stream);
+    this.userRecordings.set(recorderInstance.filename, recorderInstance);
+    if (this.recordingEnabled) recorderInstance.startRecording();
+
     const isCurrentId = false;
     this.view.renderVideo({
       userId,
@@ -107,5 +114,9 @@ class Business {
 
   onPeerCallClose() {
     return call => console.log('Call closed', call.peer);
+  }
+
+  onRecordPressed(recordingEnabled) {
+    this.recordingEnabled = recordingEnabled;
   }
 }

@@ -8,6 +8,7 @@
         "plugin:prettier/recommended"
     ],
     "plugins": ["prettier"],
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaVersion": 12,
         "sourceType": "script"
