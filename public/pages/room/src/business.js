@@ -124,7 +124,24 @@ class Business {
         value.startRecording();
         continue;
       }
-      value.stopRecording();
+      this.stopRecording(key);
+    }
+  }
+
+  async stopRecording(userId) {
+    const userRecordings = this.userRecordings;
+
+    for (const [key, value] of userRecordings) {
+      const isContextUser = key.includes(userId);
+
+      if (!isContextUser) continue;
+
+      const rec = value;
+      const isRecordingActive = rec.recordingActive;
+
+      if (!isRecordingActive) continue;
+
+      await rec.stopRecording();
     }
   }
 }
